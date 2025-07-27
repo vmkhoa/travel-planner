@@ -1,0 +1,16 @@
+<!doctype html>
+<html>
+  <head>
+    <title>My Trip Plan</title>
+  </head>
+  <body>
+    <h1>My Trip</h1>
+    <ul>
+      {% for item in plan %}
+        <li>{{ item.location }} – {{ item.notes }}</li>
+      {% endfor %}
+    </ul>
+
+    <a href="/">Back to Chat</a>
+  </body>
+</html>

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="flex flex-col space-y-4">
+  <!-- Chat History -->
+  <div class="space-y-3">
+    {% for msg in history %}
+      <div class="{% if msg.role == 'user' %}text-right{% else %}text-left{% endif %}">
+        <div class="inline-block px-4 py-2 rounded-lg max-w-md {% if msg.role == 'user' %}bg-blue-500 text-white{% else %}bg-gray-200 text-gray-800{% endif %}">
+          <span class="font-semibold capitalize">{{ msg.role }}:</span> {{ msg.message }}
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+  <!-- Chat Input -->
+  <form method="post" class="flex items-center space-x-2 mt-4">
+    <input name="message" required class="flex-1 border p-2 rounded shadow" placeholder="Where do you want to go?">
+    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Send</button>
+  </form>
+</div>
+{% endblock %}
