@@ -115,5 +115,15 @@ def plan():
     plans = list(db.trip_plan.find({"userId": "demo"}).sort("day", 1))
     return render_template("plan.html", plans=plans)
 
+@app.route("/plan/delete", methods=["POST"])
+def delete_all_plans():
+    db.trip_plan.delete_many({"userId": "demo"})
+    return redirect("/plan")
+
+@app.route("/plan/delete/<int:day>", methods=["POST"])
+def delete_day_plan(day):
+    db.trip_plan.delete_one({"userId": "demo", "day": day})
+    return redirect("/plan")
+
 if __name__ == "__main__":
     app.run(debug=True)
