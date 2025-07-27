@@ -1,3 +1,16 @@
+import os
+import json
+
+# Load ad trigger keywords
+TRIGGER_WORDS_PATH = os.path.join(os.path.dirname(__file__), "ad_triggers.txt")
+with open(TRIGGER_WORDS_PATH) as f:
+    AD_KEYWORDS = [line.strip().lower() for line in f if line.strip()]
+
+# Load sponsor ads
+SPONSORS_PATH = os.path.join(os.path.dirname(__file__), "sponsors.json")
+with open(SPONSORS_PATH) as f:
+    SPONSOR_ADS = json.load(f)
+    
 AGENTS = {
     "guide": {
         "system_prompt": (

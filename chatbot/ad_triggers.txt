@@ -1,0 +1,6 @@
+boston
+restaurant
+hotel
+event
+beach
+museum

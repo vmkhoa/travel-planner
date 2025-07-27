@@ -3,6 +3,8 @@ from pymongo import MongoClient
 from datetime import datetime, timedelta
 from chatbot.agents import ask_agent
 import os
+from chatbot.config import AD_KEYWORDS, SPONSOR_ADS
+import random
 
 app = Flask(__name__)
 
@@ -38,18 +40,40 @@ def index():
         })
 
         # Trigger advertiser if needed
-        ad_keywords = ["boston", "hotel", "restaurant", "event"]
         combined_text = user_input.lower() + " " + guide_reply.lower()
         last_ad = chat_col.find_one({"userId": "demo", "role": "advertiser"}, sort=[("timestamp", -1)])
         cooldown_ok = not last_ad or (now - last_ad["timestamp"]) > timedelta(minutes=2)
 
-        if any(k in combined_text for k in ad_keywords) and cooldown_ok:
-            ad_reply = ask_agent("advertiser", [{"role": "user", "message": combined_text}])
+        if any(k in combined_text for k in SPONSOR_ADS) and cooldown_ok:
+            matched_ads = []
+            for keyword in SPONSOR_ADS:
+                if keyword in combined_text:
+                    matched_ads.extend(SPONSOR_ADS[keyword])
+
+            if matched_ads:
+                ad = random.choice(matched_ads)
+
+            # Let Gemini rewrite the ad copy, but include the context
+            ad_prompt = (
+                f"Write a short, friendly sponsored message (2–3 lines max) for the following offer:\n"
+                f"Title: {ad['title']}\n"
+                f"Message: {ad['message']}\n"
+                f"Don't mention the word 'ad'. Just make it natural and relevant.\n"
+            )
+
+            gemini_response = ask_agent("advertiser", [{"role": "user", "message": ad_prompt}])
+
+            # Insert clickable link manually
+            ad_reply = f"""
+            <b>{ad['title']}</b>: {gemini_response.strip()} —
+            <a href="{ad['link']}" class="text-blue-600 underline hover:text-blue-800" target="_blank">Learn more</a>'
+            """
+
             chat_col.insert_one({
-                "userId": "demo",
-                "role": "advertiser",
-                "message": ad_reply,
-                "timestamp": datetime.utcnow()
+            "userId": "demo",
+            "role": "advertiser",
+            "message": ad_reply,
+            "timestamp": datetime.utcnow()
             })
 
         return redirect("/")

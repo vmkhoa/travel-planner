@@ -1,0 +1,21 @@
+{
+  "boston": [
+    {
+      "title": "Citizen Public House Pig Roast",
+      "message": "Whole pig roast for 10+ people – $720 at Citizen Public House.",
+      "link": "https://citizenpub.com/"
+    },
+    {
+      "title": "Top of the Hub",
+      "message": "Enjoy breathtaking views and dinner at Top of the Hub.",
+      "link": "https://topofthehub.net/"
+    }
+  ],
+  "restaurant": [
+    {
+      "title": "OpenTable Boston",
+      "message": "Book top Boston restaurants with OpenTable.",
+      "link": "https://www.opentable.com/boston"
+    }
+  ]
+}
