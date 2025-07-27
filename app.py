@@ -5,11 +5,10 @@ from chatbot.agents import ask_agent
 import os
 from chatbot.config import AD_KEYWORDS, SPONSOR_ADS
 import random
+from database import db
+
 
 app = Flask(__name__)
-
-mongo = MongoClient("mongodb+srv://vankh:e4mkOZJLxWTkeeXZ@cluster0.x2q91uh.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
-db = mongo["travel_demo"]
 chat_col = db["chat_history"]
 
 @app.route("/", methods=["GET", "POST"])
