@@ -20,7 +20,8 @@
   </div>
 
   <!-- Chat Input -->
-  <form method="post" class="flex items-center space-x-2 mt-4">
+  <form method="post" action="/chat/{{ session_id }}" class="flex items-center space-x-2 mt-4">
+
     <input name="message" required class="flex-1 border p-2 rounded shadow" placeholder="Where do you want to go?">
     <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Send</button>
   </form>

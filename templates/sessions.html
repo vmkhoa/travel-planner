@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2 class="text-xl font-bold mb-4">Chat Sessions</h2>
+
+<a href="/new" class="inline-block mb-4 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Start New Session</a>
+
+<ul class="space-y-4">
+  {% for s in sessions %}
+    <li class="border rounded p-4 flex justify-between items-center">
+      <div>
+        <h3 class="font-semibold">{{ s.title }}</h3>
+        <small class="text-gray-500">{{ s.createdAt.strftime('%Y-%m-%d %H:%M') }}</small>
+      </div>
+      <div class="space-x-2">
+        <a href="/chat/{{ s.sessionId }}" class="text-blue-600 hover:underline">Continue</a>
+        <form method="post" action="/sessions/delete/{{ s.sessionId }}" class="inline">
+          <button type="submit" class="text-red-500 hover:underline">Delete</button>
+        </form>
+      </div>
+    </li>
+  {% endfor %}
+</ul>
+{% endblock %}
