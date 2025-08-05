@@ -6,7 +6,6 @@ from chatbot.agents import ask_agent
 from chatbot.config import AD_KEYWORDS, SPONSOR_ADS
 from database import db
 from bson import ObjectId
-from chatbot.utils import extract_plan_info
 app = Flask(__name__)
 
 chat_col = db["chat_history"]
@@ -64,29 +63,6 @@ def chat(session_id):
             "message": guide_reply,
             "timestamp": datetime.utcnow()
         })
-
-        # Auto-add to trip plan if instruction detected
-        if "add to plan" in guide_reply.lower():
-            info = extract_plan_info(guide_reply)
-            if info:
-                db.trip_plan.update_one(
-                    {"userId": "demo", "day": info["day"]},
-                    {"$push": {"items": {
-                        "time": info["time"],
-                        "type": "activity",
-                        "title": info["title"],
-                        "notes": ""
-                    }}},
-                    upsert=True
-                )
-            else:
-                guide_reply += " (Please include day, time, and title so I can add it to your plan!)"
-
-            # Update the revised guide reply with the extra note if necessary
-            chat_col.update_one(
-                {"userId": "demo", "role": "guide", "message": guide_reply},
-                {"$set": {"message": guide_reply}}
-            )
 
         # Trigger advertiser
         combined_text = user_input.lower() + " " + guide_reply.lower()
