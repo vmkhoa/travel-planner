@@ -10,4 +10,9 @@ dependencies = [
     "pymongo>=4.13.2",
     "python-dotenv>=1.1.1",
     "requests>=2.32.4",
+    "uvicorn>=0.35.0",
 ]
+[tool.setuptools]
+# Explicitly include top-level files and folders that are part of your app
+py-modules = ["app", "database"]
+packages = ["chatbot"]
